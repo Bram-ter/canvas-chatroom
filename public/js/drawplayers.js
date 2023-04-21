@@ -19,7 +19,7 @@ function drawPlayers(players) {
       if (players.hasOwnProperty(id)) {
         const player = players[id];
         const color = id === socket.id ? 'red' : 'blue'; // Use red for the local player and blue for others
-  
+
         ctx.fillStyle = color;
         ctx.fillRect(player.x, player.y, 20, 20);
       }

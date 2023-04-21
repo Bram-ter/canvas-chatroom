@@ -9,7 +9,7 @@ export function playerMovement (socket, io) {
   console.log(`User ${socket.id} connected`);
 
   // Assign a player index to the new player
-  const playerIndex = nextPlayerIndex + 1;
+  const playerIndex = nextPlayerIndex;
   nextPlayerIndex++;
   socket.emit('playerIndex', playerIndex);
 
