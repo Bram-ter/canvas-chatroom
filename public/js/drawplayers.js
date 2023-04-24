@@ -1,6 +1,7 @@
 // Connect to the Socket.io server
 const socket = io();
 const canvas = document.querySelector('canvas');
+const playerColors = ['red', 'blue', 'green', 'yellow'];
 let playerIndex;
 
 // Get the 2D rendering context for the canvas
@@ -15,16 +16,16 @@ let players = {};
 
 // Draw all players on the canvas
 function drawPlayers(players) {
-    for (const id in players) {
-      if (players.hasOwnProperty(id)) {
-        const player = players[id];
-        const color = id === socket.id ? 'red' : 'blue'; // Use red for the local player and blue for others
+  for (const id in players) {
+    if (players.hasOwnProperty(id)) {
+      const player = players[id];
+      const color = player.color;
 
-        ctx.fillStyle = color;
-        ctx.fillRect(player.x, player.y, 20, 20);
-      }
+      ctx.fillStyle = color;
+      ctx.fillRect(player.x, player.y, 20, 20);
     }
   }
+}
 
 // Redraw the canvas with updated player positions
 function redrawCanvas() {
@@ -70,13 +71,26 @@ socket.on('playerMoved', ({ id, x, y }) => {
 
 // Listen for all players event from the server
 socket.on('allPlayers', (allPlayers) => {
-  console.log('allPlayers', allPlayers);
+  // Assign colors to the first 4 players
+  let i = 0;
+  for (const id in allPlayers) {
+    if (allPlayers.hasOwnProperty(id)) {
+      allPlayers[id].color = playerColors[i];
+      i++;
+      if (i >= 4) {
+        break;
+      }
+    }
+  }
   players = allPlayers;
 });
 
 socket.on('newPlayer', (id) => {
-  // Add new player to the players object
-  players[id] = { x: 0, y: 0 };
+  // Assign a color to the new player
+  const color = playerColors[Object.keys(players).length % 4];
+
+  // Add new player to the players object with the assigned color
+  players[id] = { x: 0, y: 0, color };
 
   // If this is the local player, set their playerIndex to the index of the new player
   if (id === socket.id) {

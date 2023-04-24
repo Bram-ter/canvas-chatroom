@@ -1,5 +1,5 @@
 {
-  "name": "fizzychat",
+  "name": "real-time-web-repo",
   "version": "1.0.0",
   "description": "Chat room created for the Minor web",
   "main": "app.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Bram-ter/Fizzychat.git"
+    "url": "git+https://github.com/Bram-ter/real-time-web-2223.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Bram-ter/Fizzychat/issues"
+    "url": "https://github.com/Bram-ter/real-time-web-2223/issues"
   },
-  "homepage": "https://github.com/Bram-ter/Fizzychat#readme",
+  "homepage": "https://github.com/Bram-ter/real-time-web-2223#readme",
   "dependencies": {
     "ejs": "^3.1.9",
     "express": "^4.18.2",

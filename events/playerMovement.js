@@ -2,15 +2,29 @@
 const players = {};
 
 // Keep track of the next player index to assign
-let nextPlayerIndex = 0;
+let nextPlayerIndex = 1;
+
+// Define an array of colors
+const colors = ['red', 'blue', 'green', 'yellow'];
 
 // Listen for player movement events from the clients
-export function playerMovement (socket, io) {
-  console.log(`User ${socket.id} connected`);
+export function initPlayers (socket) {
+  console.log(`User ${socket.id} connected`); 
 
   // Assign a player index to the new player
   const playerIndex = nextPlayerIndex;
   nextPlayerIndex++;
+
+  // If there are already 4 players, don't allow any more
+  if (nextPlayerIndex > 5) {
+    console.log('lobby zit vol')
+    socket.disconnect();
+    return;
+  }
+
+  // Assign a color to the new player based on their index
+  const color = colors[playerIndex];
+
   socket.emit('playerIndex', playerIndex);
 
   console.log(playerIndex)
@@ -24,6 +38,10 @@ export function playerMovement (socket, io) {
   // Broadcast the new player to all other players
   socket.broadcast.emit('newPlayer', socket.id);
 
+  // Emit the player index and color to the new player
+  socket.emit('playerIndex', playerIndex);
+  socket.emit('playerColor', color);
+
   socket.on('playerMoved', ({ x, y }) => {
     players[socket.id] = { x, y };
     socket.broadcast.emit('playerMoved', { id: socket.id, x, y });
@@ -35,9 +53,10 @@ export function playerMovement (socket, io) {
   // Listen for disconnect events
   socket.on('disconnect', () => {
     console.log(`User ${socket.id} disconnected`);
+    nextPlayerIndex--;
     delete players[socket.id];
     socket.broadcast.emit('playerDisconnected', socket.id);
   });
 };
 
-export default playerMovement;
+export default initPlayers;

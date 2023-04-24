@@ -3,8 +3,7 @@ import http from 'http';
 import { Server } from 'socket.io';
 
 import routes from "./routes/routes.js";
- 
-import playerMovement from "./events/playerMovement.js";
+import initPlayers from "./events/playerMovement.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -20,7 +19,7 @@ app.set('view engine', 'ejs');
 app.use(routes)
 
 io.on('connection', (socket, players, nextPlayerIndex) => {
-  playerMovement(socket, io, players, nextPlayerIndex);
+  initPlayers(socket, io, players, nextPlayerIndex);
 });
 
 server.listen(port, () => console.info(`App listening on port ${port}`));
