@@ -1,5 +1,6 @@
+import getRandomColor from "./getRandomColor.js"
+
 const players = {};
-const playerColors = [];
 
 function initPlayers(socket, io) {
   const color = getRandomColor();
@@ -25,14 +26,6 @@ function initPlayers(socket, io) {
   });
 }
 
-function getRandomColor() {
-  const letters = '0123456789ABCDEF';
-  let color = '#';
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  playerColors.push(color); // Add the generated color to the array
-  return color;
-}
+getRandomColor();
 
 export default initPlayers;

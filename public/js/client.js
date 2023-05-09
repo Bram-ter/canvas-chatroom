@@ -70,10 +70,6 @@ socket.on('playerColor', (color, socketId) => {
   players[socketId].color = color;
 });
 
-socket.on('playerIndex', (index) => {
-  currentPlayerColor = playerColors[index];
-});
-
 requestAnimationFrame(redrawCanvas);
 
 // ********** 
