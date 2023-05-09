@@ -1,50 +1,38 @@
 const players = {};
-const colors = ['red', 'blue', 'green', 'yellow'];
+const playerColors = [];
 
-let nextPlayerIndex = 0;
+function initPlayers(socket, io) {
+  const color = getRandomColor();
+  console.log(`User ${color} with id: ${socket.id} connected`);
 
-export function initPlayers(socket) {
-  const playerIndex = nextPlayerIndex;
-  nextPlayerIndex++;
-
-  if (nextPlayerIndex > 4) {
-    console.log('lobby zit vol');
-    socket.disconnect();
-    return;
-  }
-
-  const color = colors[playerIndex];
-  console.log(`User ${color} with id:${socket.id} connected`);
-
-  players[socket.id] = { x: 0, y: 0 };
-
-  console.log(playerIndex);
+  players[socket.id] = { x: 0, y: 0, color };
 
   socket.emit('allPlayers', players);
-
   socket.broadcast.emit('newPlayer', socket.id);
-
-  socket.emit('playerIndex', playerIndex);
-  socket.emit('playerColor', color);
+  io.emit('playerColor', color, socket.id);
 
   socket.on('playerMoved', ({ x, y }) => {
-    players[socket.id] = { x, y };
+    players[socket.id].x = x;
+    players[socket.id].y = y;
     socket.broadcast.emit('playerMoved', { id: socket.id, x, y });
-    
-    // Emit the playerMoved event back to the local player
     socket.emit('playerMoved', { id: socket.id, x, y });
   });
 
   socket.on('disconnect', () => {
     console.log(`User ${color} disconnected`);
-
     socket.broadcast.emit('playerDisconnected', socket.id);
-    socket.broadcast.emit('playerColor', color);
-
     delete players[socket.id];
-
-    nextPlayerIndex--;
   });
+}
+
+function getRandomColor() {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  playerColors.push(color); // Add the generated color to the array
+  return color;
 }
 
 export default initPlayers;
