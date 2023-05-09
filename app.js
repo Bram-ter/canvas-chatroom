@@ -20,6 +20,10 @@ app.use(routes)
 
 io.on('connection', (socket, players, nextPlayerIndex) => {
   initPlayers(socket, io, players, nextPlayerIndex);
+
+  socket.on('chat message', (msg) => {
+    io.emit('chat message', msg);
+  });
 });
 
 server.listen(port, () => console.info(`App listening on port ${port}`));

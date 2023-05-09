@@ -5,6 +5,10 @@ const playerColors = ['red', 'blue', 'green', 'yellow'];
 let players = {};
 let playerIndex;
 
+// ********** 
+  // Client side game code 
+// **********
+
 // Set up the canvas and initial player position
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -16,11 +20,13 @@ window.addEventListener('resize', () => {
 
 // Draw all players on the canvas
 function drawPlayers(players) {
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
   for (const id in players) {
     if (players.hasOwnProperty(id)) {
       const player = players[id];
       const color = player.color;
-      const ctx = canvas.getContext('2d');
 
       ctx.fillStyle = color;
       ctx.fillRect(player.x, player.y, 20, 20);
@@ -30,8 +36,6 @@ function drawPlayers(players) {
 
 // Redraw the canvas with updated player positions
 function redrawCanvas() {
-  const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawPlayers(players);
     requestAnimationFrame(redrawCanvas);
 }
@@ -55,7 +59,6 @@ document.addEventListener('keydown', (event) => {
     }
   
     socket.emit('playerMoved', { x, y });
-    // console.log('playerMoved', { id: socket.id, x, y });
   });
 
 socket.on('playerIndex', (index) => {
@@ -95,3 +98,46 @@ socket.on('playerDisconnected', (id) => {
 });
 
 requestAnimationFrame(redrawCanvas);
+
+// ********** 
+  // Chat functionality
+// **********
+
+const chat = document.querySelector('form');
+const messageInput = document.getElementById('message');
+const messageList = document.querySelector('ul');
+const usernameInput = document.getElementById('username');
+
+chat.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const message = messageInput.value;
+  const username = usernameInput.value;
+  socket.emit('chat message', { username, message });
+  messageInput.value = '';
+});
+
+socket.on('chat message', (msg) => {
+  const messageElement = document.createElement('li');
+  messageElement.textContent = `${msg.username}: ${msg.message}`;
+  messageList.appendChild(messageElement);
+});
+
+document.addEventListener('keyup', (e) => {
+  if (e.key === 'Enter') {
+    messageInput.focus();
+  }
+});
+
+messageInput.addEventListener('keyup', (e) => {
+  if (e.key === 'Enter') {
+    chat.submit();
+  }
+});
+
+document.addEventListener('keyup', (e) => {
+  if (e.key === 'Enter') {
+    const chatWindow = document.querySelector('body main section');
+    chatWindow.classList.toggle('show');
+    messageInput.focus();
+  }
+});
