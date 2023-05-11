@@ -63,14 +63,14 @@ socket.on('newPlayer', (id) => {
 });
 
 socket.on('connect', () => {
-  const reconnectMessage = document.querySelector('reconnectMessage');
+  const reconnectMessage = document.querySelector('body > p');
   if (reconnectMessage) {
     reconnectMessage.style.display = 'none';
   }
 });
 
 socket.io.on("reconnect_attempt", () => {
-  const reconnectMessage = document.querySelector('reconnectMessage');
+  const reconnectMessage = document.querySelector('body > p');
   reconnectMessage.style.display = 'block';
   reconnectMessage.textContent = 'Attempting to reconnect...';
 });
