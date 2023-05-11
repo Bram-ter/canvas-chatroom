@@ -62,6 +62,20 @@ socket.on('newPlayer', (id) => {
   players[id] = { x: 0, y: 0 };
 });
 
+socket.on('disconnect', () => {
+  const reconnectMessage = document.createElement('p');
+  reconnectMessage.id = 'reconnectMessage';
+  reconnectMessage.textContent = 'Attempting to reconnect...';
+  document.body.appendChild(reconnectMessage);
+});
+
+socket.on('reconnect', () => {
+  const reconnectMessage = document.querySelector('#reconnectMessage');
+  if (reconnectMessage) {
+    reconnectMessage.remove();
+  }
+});
+
 socket.on('playerDisconnected', (id) => {
   delete players[id];
 });
