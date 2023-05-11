@@ -70,13 +70,10 @@ socket.on('disconnect', () => {
   document.body.appendChild(reconnectMessage);
 });
 
-socket.on('reconnect', () => {
+socket.io.on("reconnect_attempt", () => {
   const reconnectMessage = document.querySelector('#reconnectMessage');
   if (reconnectMessage) {
     reconnectMessage.style.display = 'none';
-    console.log(reconnectMessage)
-    reconnectMessage.remove();
-    reconnectMessage = null;
   }
 });
 
