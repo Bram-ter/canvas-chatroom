@@ -7,8 +7,8 @@ function initPlayers(socket, io) {
   console.log(`User ${color} with id: ${socket.id} connected`);
 
   players[socket.id] = { 
-    x: Math.floor(Math.random() * (800 - 0 + 1)),
-    y: Math.floor(Math.random() * (800 - 0 + 1)), 
+    x: Math.floor(Math.random() * (800)),
+    y: Math.floor(Math.random() * (800)), 
     color 
   };
 

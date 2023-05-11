@@ -55,16 +55,12 @@ socket.on('allPlayers', (allPlayers) => {
 });
 
 socket.on('newPlayer', (id) => {
-  // Define the range of coordinates on the screen
-  const minX = 0;
-  const maxX = 800;
-  const minY = 0;
-  const maxY = 600;
+  const maxX = window.innerWidth;
+  const maxY = window.innerHeight;
 
-  const randomX = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
-  const randomY = Math.floor(Math.random() * (maxY - minY + 1)) + minY;
+  const randomX = Math.floor(Math.random() * (maxX));
+  const randomY = Math.floor(Math.random() * (maxY));
 
-  // Assign the random coordinates to the new player
   players[id] = { x: randomX, y: randomY };
 });
 
