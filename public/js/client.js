@@ -22,7 +22,7 @@ function drawPlayers(players) {
     const color = player.color;
 
     ctx.fillStyle = color;
-    ctx.fillRect(player.x, player.y, 20, 20);
+    ctx.fillRect(player.x, player.y, 30, 30);
   }
 }
 

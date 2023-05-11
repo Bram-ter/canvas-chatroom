@@ -24,6 +24,12 @@ io.on('connection', (socket, players, nextPlayerIndex) => {
   socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
   });
+
+  socket.on('reconnect_attempt', () => {
+    const reconnectMessage = document.createElement('p');
+    reconnectMessage.textContent = 'Attempting to reconnect...';
+    document.body.appendChild(reconnectMessage);
+  });
 });
 
 server.listen(port, () => console.info(`App listening on port ${port}`));
