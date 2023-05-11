@@ -74,6 +74,9 @@ socket.on('reconnect', () => {
   const reconnectMessage = document.querySelector('#reconnectMessage');
   if (reconnectMessage) {
     reconnectMessage.style.display = 'none';
+    console.log(reconnectMessage)
+    reconnectMessage.remove();
+    reconnectMessage = null;
   }
 });
 
