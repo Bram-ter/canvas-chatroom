@@ -1,19 +1,11 @@
+import resizeCanvas from "./modules/canvasResizing.js";
+
 const socket = io();
 const canvas = document.querySelector('canvas');
 let players = {};
-let currentPlayerColor;
-
-// Set up the canvas and initial player position
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
 
 // Draw all players on the canvas
-function drawPlayers(players) {
+function drawPlayers() {
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -23,6 +15,10 @@ function drawPlayers(players) {
 
     ctx.fillStyle = color;
     ctx.fillRect(player.x, player.y, 30, 30);
+
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(player.x, player.y, 30, 30);
   }
 }
 
@@ -59,7 +55,17 @@ socket.on('allPlayers', (allPlayers) => {
 });
 
 socket.on('newPlayer', (id) => {
-  players[id] = { x: 0, y: 0 };
+  // Define the range of coordinates on the screen
+  const minX = 0;
+  const maxX = 800;
+  const minY = 0;
+  const maxY = 600;
+
+  const randomX = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
+  const randomY = Math.floor(Math.random() * (maxY - minY + 1)) + minY;
+
+  // Assign the random coordinates to the new player
+  players[id] = { x: randomX, y: randomY };
 });
 
 socket.on('connect', () => {
@@ -83,6 +89,7 @@ socket.on('playerColor', (color, socketId) => {
   players[socketId].color = color;
 });
 
+resizeCanvas();
 requestAnimationFrame(redrawCanvas);
 
 // ********** 

@@ -6,7 +6,11 @@ function initPlayers(socket, io) {
   const color = getRandomColor();
   console.log(`User ${color} with id: ${socket.id} connected`);
 
-  players[socket.id] = { x: 0, y: 0, color };
+  players[socket.id] = { 
+    x: Math.floor(Math.random() * (800 - 0 + 1)),
+    y: Math.floor(Math.random() * (800 - 0 + 1)), 
+    color 
+  };
 
   socket.emit('allPlayers', players);
   socket.broadcast.emit('newPlayer', socket.id);
