@@ -66,13 +66,14 @@ socket.on('disconnect', () => {
   const reconnectMessage = document.createElement('p');
   reconnectMessage.id = 'reconnectMessage';
   reconnectMessage.textContent = 'Attempting to reconnect...';
+  reconnectMessage.style.display = 'block';
   document.body.appendChild(reconnectMessage);
 });
 
 socket.on('reconnect', () => {
   const reconnectMessage = document.querySelector('#reconnectMessage');
   if (reconnectMessage) {
-    reconnectMessage.remove();
+    reconnectMessage.style.display = 'none';
   }
 });
 
