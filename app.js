@@ -27,7 +27,7 @@ io.on('connection', (socket, players, nextPlayerIndex) => {
 
   socket.on('reconnect_attempt', () => {
     const reconnectMessage = document.createElement('p');
-    reconnectMessage.textContent = 'Attempting to reconnect...';
+    reconnectMessage.textContent = 'Attempting to reconnect..';
     document.body.appendChild(reconnectMessage);
   });
 });
