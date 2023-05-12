@@ -1,8 +1,10 @@
 # real-time-web-2223
 
-Voor het vak real time web wil ik kijken of ik met socket.io een real time game kan maken. Verdere beschrijving over mijn proces en code kan je terug vinden in mijn wiki
+Voor het vak real time web is de bedoeling dat we met socket.io een real time applicatie in elkaar zetten. Om mijzelf te testen wil ik kijken of ik met socket.io een real time game en chatroom kan maken. Verdere beschrijving over mijn proces en code kan je terug vinden in mijn wiki
 
-### Wat heb je nodig:
+## Project zelf installeren
+Om het project zelf lokaal te draaien heb je de volgende dingen nodig
+
 - NPM
 - node
 - Express
@@ -21,3 +23,9 @@ Voor het vak real time web wil ik kijken of ik met socket.io een real time game 
 ### Applicatie te starten
 
     npm start
+
+### Live demo
+
+Het project staat zelf ook live op https://railway.app/ en is te vinden op [deze link](real-time-web-2223-canvaschat.up.railway.app)
+
+idealit

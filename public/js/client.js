@@ -55,13 +55,7 @@ socket.on('allPlayers', (allPlayers) => {
 });
 
 socket.on('newPlayer', (id) => {
-  const maxX = window.innerWidth;
-  const maxY = window.innerHeight;
-
-  const randomX = Math.floor(Math.random() * (maxX));
-  const randomY = Math.floor(Math.random() * (maxY));
-
-  players[id] = { x: randomX, y: randomY };
+  players[id] = { x: 0, y: 0 };
 });
 
 socket.on('connect', () => {
