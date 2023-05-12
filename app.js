@@ -18,8 +18,8 @@ app.set('view engine', 'ejs');
 
 app.use(routes)
 
-io.on('connection', (socket, players, nextPlayerIndex) => {
-  initPlayers(socket, io, players, nextPlayerIndex);
+io.on('connection', (socket) => {
+  initPlayers(socket, io);
 
   socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
