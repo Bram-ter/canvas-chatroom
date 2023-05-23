@@ -9,12 +9,18 @@ function initPlayers(socket, io) {
   players[socket.id] = { 
     x: 0,
     y: 0, 
-    color 
+    color,
+    name: ''
   };
+
+  socket.on('updateName', (newName) => {
+    players[socket.id].name = newName;
+    io.emit('playerNameUpdated', socket.id, newName);
+  });
 
   socket.emit('allPlayers', players);
   socket.broadcast.emit('newPlayer', socket.id);
-  io.emit('playerColor', color, socket.id);
+  io.emit('playerColor', color, socket.id, players[socket.id].name);
 
   socket.on('playerMoved', ({ x, y }) => {
     players[socket.id].x = x;

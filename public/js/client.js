@@ -13,12 +13,20 @@ function drawPlayers() {
     const player = players[id];
     const color = player.color;
 
+    const playerName = player.name;
+    const nameWidth = ctx.measureText(playerName).width;
+    const nameX = player.x + (30 - nameWidth) / 2;
+
     ctx.fillStyle = color;
     ctx.fillRect(player.x, player.y, 30, 30);
 
     ctx.strokeStyle = 'black';
     ctx.lineWidth = 2;
     ctx.strokeRect(player.x, player.y, 30, 30);
+
+    ctx.fillStyle = 'black';
+    ctx.font = '12px Roboto';
+    ctx.fillText(playerName, nameX, player.y - 5);
   }
 }
 
@@ -79,6 +87,10 @@ socket.on('playerColor', (color, socketId) => {
   players[socketId].color = color;
 });
 
+socket.on('playerNameUpdated', (socketId, newName) => {
+  players[socketId].name = newName;
+});
+
 resizeCanvas();
 requestAnimationFrame(redrawCanvas);
 
@@ -96,11 +108,11 @@ const chatWindow = document.querySelector('body main section');
 
 // Function to show the alert and prompt for a new username
 function showAlert() {
-  const storedUsername = localStorage.getItem('username');
+  const storedUsername = invisibleSpan.textContent;
   const newName = prompt('Please enter your name:');
   if (newName) {
     invisibleSpan.textContent = newName;
-    localStorage.setItem('username', newName);
+    socket.emit('updateName', newName); // Emit event to update the name on the server
   } else if (storedUsername) {
     invisibleSpan.textContent = storedUsername;
   }
