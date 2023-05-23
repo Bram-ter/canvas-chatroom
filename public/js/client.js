@@ -88,15 +88,48 @@ requestAnimationFrame(redrawCanvas);
 
 const chat = document.querySelector('form');
 const messageInput = document.getElementById('message');
-const messageList = document.querySelector('ul');
-const usernameInput = document.getElementById('username');
+const messageList = document.getElementById('messages');
+const invisibleSpan = document.getElementById('username');
+const changeNameButton = document.getElementById('change-name');
+const closeButton = document.getElementById('close-button');
+const chatWindow = document.querySelector('body main section');
+
+// Function to show the alert and prompt for a new username
+function showAlert() {
+  const storedUsername = localStorage.getItem('username');
+  const newName = prompt('Please enter your name:');
+  if (newName) {
+    invisibleSpan.textContent = newName;
+    localStorage.setItem('username', newName);
+  } else if (storedUsername) {
+    invisibleSpan.textContent = storedUsername;
+  }
+}
+
+// Check if the username is stored in local storage
+const storedUsername = localStorage.getItem('username');
+if (storedUsername) {
+  invisibleSpan.textContent = storedUsername; // Fill in the stored username
+} else {
+  showAlert(); // Show the alert if the username is not stored
+}
+
+changeNameButton.addEventListener('click', showAlert);
 
 chat.addEventListener('submit', (e) => {
   e.preventDefault();
-  const message = messageInput.value;
-  const username = usernameInput.value;
-  socket.emit('chat message', { username, message });
-  messageInput.value = '';
+  const message = messageInput.value.trim();
+  const username = invisibleSpan.textContent;
+
+  if (message !== '') {
+    // Store the username in local storage
+    localStorage.setItem('username', username);
+
+    socket.emit('chat message', { username, message });
+    messageInput.value = '';
+  } else {
+    alert('Please enter a valid message.');
+  }
 });
 
 socket.on('chat message', (msg) => {
@@ -105,22 +138,13 @@ socket.on('chat message', (msg) => {
   messageList.appendChild(messageElement);
 });
 
+// Open/close chat window with "Z" key
 document.addEventListener('keyup', (e) => {
-  if (e.key === 'Enter') {
-    messageInput.focus();
+  if (e.key === 'z' || e.key === 'Z') {
+    chatWindow.classList.add('show');
   }
 });
 
-messageInput.addEventListener('keyup', (e) => {
-  if (e.key === 'Enter') {
-    chat.submit();
-  }
-});
-
-document.addEventListener('keyup', (e) => {
-  if (e.key === 'Enter') {
-    const chatWindow = document.querySelector('body main section');
-    chatWindow.classList.toggle('show');
-    messageInput.focus();
-  }
+closeButton.addEventListener('click', () => {
+  chatWindow.classList.remove('show');
 });

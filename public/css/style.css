@@ -19,6 +19,10 @@ html, body {
   background-color: #fff;
 }
 
+#username {
+  display: none;
+}
+
 canvas {
   position: fixed;
   top: 0;

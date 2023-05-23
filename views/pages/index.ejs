@@ -5,11 +5,13 @@
         <canvas style="background-color: rgb(<%= rgbValues[0].red %>, <%= rgbValues[0].green %>, <%= rgbValues[0].blue %>)"></canvas>
 
         <section>
+            <button id="close-button" aria-label="Close chat">&times;</button>
             <ul id="messages"></ul>
             <form>
-            <input id="username" type="text" placeholder="Username">
+            <span id="username"></span>
             <input id="message" type="text" placeholder="Message">
             <button id="send-button" type="submit">Send</button>
+            <button id="change-name" type="submit">Change name</button>
             </form>
         </section>
     </main>

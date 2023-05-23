@@ -30,6 +30,4 @@ function initPlayers(socket, io) {
   });
 }
 
-getRandomColor();
-
 export default initPlayers;
