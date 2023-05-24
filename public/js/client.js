@@ -67,6 +67,10 @@ function drawPlayers() {
   }
 }
 
+function updateCanvas() {
+  drawPlayers(players);
+}
+
 function redrawCanvas() {
   drawPlayers(players);
   requestAnimationFrame(redrawCanvas);
@@ -129,15 +133,15 @@ socket.on('playerDisconnected', (id) => {
 
 socket.on('chat message', (msg) => {
   const messageElement = document.createElement('li');
+  const messageHistory = document.getElementById('messageHistory');
+ 
   messageElement.textContent = `${msg.username}: ${msg.message}`;
-  
-  messageHistory.innerHTML = '';
-  
   messageHistory.appendChild(messageElement);
 
   const playerId = socket.id;
   players[playerId].message = msg.message;
-  redrawCanvas();
+  
+  updateCanvas();
 });
 
 // ********** 
@@ -146,47 +150,22 @@ socket.on('chat message', (msg) => {
 
 const chat = document.querySelector('form');
 const messageInput = document.getElementById('message');
-const messageHistory = document.getElementById('messageHistory');
 const invisibleSpan = document.getElementById('username');
 const changeNameButton = document.getElementById('change-name');
 const closeButton = document.getElementById('close-button');
 const chatWindow = document.querySelector('body main section');
-const storedUsername = localStorage.getItem('username');
 
 function showAlert() {
-  const newName = prompt('Please enter your name:') || storedUsername;
+  const newName = prompt('Please enter your name:');
   
   if (newName) {
     invisibleSpan.textContent = newName;
     localStorage.setItem('username', newName);
     socket.emit('updateName', newName);
-  } else if (storedUsername) {
-    invisibleSpan.textContent = storedUsername;
-    socket.emit('updateName', storedUsername);
   }
 }
 
-function displayMessageAboveCube(player) {
-  const ctx = canvas.getContext('2d');
-  const message = player.message;
-
-  if (message) {
-    const messageWidth = ctx.measureText(message).width;
-    const messageX = player.x + (30 - messageWidth) / 2;
-
-    ctx.fillStyle = 'black';
-    ctx.font = '12px Roboto';
-    ctx.fillText(message, messageX, player.y - 20);
-  }
-}
-
-if (storedUsername) {
-  invisibleSpan.textContent = storedUsername;
-  socket.emit('updateName', storedUsername);
-} 
-else {
-  showAlert();
-}
+showAlert();
 
 changeNameButton.addEventListener('click', showAlert);
 
