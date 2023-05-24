@@ -134,13 +134,16 @@ socket.on('playerDisconnected', (id) => {
 socket.on('chat message', (msg) => {
   const messageElement = document.createElement('li');
   const messageHistory = document.getElementById('messageHistory');
- 
+
   messageElement.textContent = `${msg.username}: ${msg.message}`;
   messageHistory.appendChild(messageElement);
 
-  const playerId = socket.id;
-  players[playerId].message = msg.message;
-  
+  // For the canvas message bubbles
+  const senderId = msg.senderId;
+  if (players[senderId]) {
+    players[senderId].message = msg.message;
+  }
+
   updateCanvas();
 });
 
@@ -157,7 +160,6 @@ const chatWindow = document.querySelector('body main section');
 
 function showAlert() {
   const newName = prompt('Please enter your name:');
-  
   if (newName) {
     invisibleSpan.textContent = newName;
     localStorage.setItem('username', newName);
@@ -176,7 +178,6 @@ chat.addEventListener('submit', (e) => {
 
   if (message !== '') {
     localStorage.setItem('username', username);
-
     socket.emit('chat message', { username, message });
     messageInput.value = '';
   };

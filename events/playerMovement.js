@@ -28,9 +28,7 @@ function initPlayers(socket, io) {
     const playerName = players[playerId].name;
     const message = `${playerName}: ${msg.message}`;
   
-    players[playerId].message = message;
-
-    io.emit('playerMoved', { id: playerId, x: 0, y: 0, message });
+    io.emit('chat message', { senderId: playerId, username: playerName, message });
   });
 
   socket.on('playerMoved', ({ x, y }) => {
