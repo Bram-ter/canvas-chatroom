@@ -66,6 +66,14 @@ socket.on('newPlayer', (id) => {
   players[id] = { x: 0, y: 0 };
 });
 
+socket.on('playerColor', (color, socketId) => {
+  players[socketId].color = color;
+});
+
+socket.on('playerNameUpdated', ({ playerId, name }) => {
+  players[playerId].name = name;
+});
+
 socket.on('connect', () => {
   const reconnectMessage = document.querySelector('body > p');
   if (reconnectMessage) {
@@ -83,16 +91,11 @@ socket.on('playerDisconnected', (id) => {
   delete players[id];
 });
 
-socket.on('playerColor', (color, socketId) => {
-  players[socketId].color = color;
+socket.on('chat message', (msg) => {
+  const messageElement = document.createElement('li');
+  messageElement.textContent = `${msg.username}: ${msg.message}`;
+  messageList.appendChild(messageElement);
 });
-
-socket.on('playerNameUpdated', (socketId, newName) => {
-  players[socketId].name = newName;
-});
-
-resizeCanvas();
-requestAnimationFrame(redrawCanvas);
 
 // ********** 
   // Chat functionality
@@ -105,25 +108,28 @@ const invisibleSpan = document.getElementById('username');
 const changeNameButton = document.getElementById('change-name');
 const closeButton = document.getElementById('close-button');
 const chatWindow = document.querySelector('body main section');
+const storedUsername = localStorage.getItem('username');
 
-// Function to show the alert and prompt for a new username
 function showAlert() {
-  const storedUsername = invisibleSpan.textContent;
-  const newName = prompt('Please enter your name:');
+  const newName = prompt('Please enter your name:') || storedUsername;
+  
   if (newName) {
     invisibleSpan.textContent = newName;
-    socket.emit('updateName', newName); // Emit event to update the name on the server
+    localStorage.setItem('username', newName);
+    socket.emit('updateName', newName);
   } else if (storedUsername) {
     invisibleSpan.textContent = storedUsername;
+    socket.emit('updateName', storedUsername);
   }
 }
 
 // Check if the username is stored in local storage
-const storedUsername = localStorage.getItem('username');
 if (storedUsername) {
-  invisibleSpan.textContent = storedUsername; // Fill in the stored username
-} else {
-  showAlert(); // Show the alert if the username is not stored
+  invisibleSpan.textContent = storedUsername;
+  socket.emit('updateName', storedUsername);
+} 
+else {
+  showAlert();
 }
 
 changeNameButton.addEventListener('click', showAlert);
@@ -139,15 +145,7 @@ chat.addEventListener('submit', (e) => {
 
     socket.emit('chat message', { username, message });
     messageInput.value = '';
-  } else {
-    alert('Please enter a valid message.');
-  }
-});
-
-socket.on('chat message', (msg) => {
-  const messageElement = document.createElement('li');
-  messageElement.textContent = `${msg.username}: ${msg.message}`;
-  messageList.appendChild(messageElement);
+  };
 });
 
 // Open/close chat window with "Z" key
@@ -160,3 +158,6 @@ document.addEventListener('keyup', (e) => {
 closeButton.addEventListener('click', () => {
   chatWindow.classList.remove('show');
 });
+
+resizeCanvas();
+requestAnimationFrame(redrawCanvas);

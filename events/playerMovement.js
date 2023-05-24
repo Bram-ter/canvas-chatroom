@@ -13,9 +13,10 @@ function initPlayers(socket, io) {
     name: ''
   };
 
-  socket.on('updateName', (newName) => {
-    players[socket.id].name = newName;
-    io.emit('playerNameUpdated', socket.id, newName);
+  socket.on('updateName', (name) => {
+    const playerId = socket.id;
+    players[playerId].name = name;
+    io.emit('playerNameUpdated', { playerId, name });
   });
 
   socket.emit('allPlayers', players);
