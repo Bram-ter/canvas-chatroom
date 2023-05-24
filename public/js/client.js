@@ -104,7 +104,6 @@ socket.on('chat message', (msg) => {
 const chat = document.querySelector('form');
 const messageInput = document.getElementById('message');
 const messageList = document.getElementById('messages');
-const invisibleSpan = document.getElementById('username');
 const changeNameButton = document.getElementById('change-name');
 const closeButton = document.getElementById('close-button');
 const chatWindow = document.querySelector('body main section');
@@ -114,18 +113,15 @@ function showAlert() {
   const newName = prompt('Please enter your name:') || storedUsername;
   
   if (newName) {
-    invisibleSpan.textContent = newName;
     localStorage.setItem('username', newName);
     socket.emit('updateName', newName);
   } else if (storedUsername) {
-    invisibleSpan.textContent = storedUsername;
     socket.emit('updateName', storedUsername);
   }
 }
 
 // Check if the username is stored in local storage
 if (storedUsername) {
-  invisibleSpan.textContent = storedUsername;
   socket.emit('updateName', storedUsername);
 } 
 else {
@@ -137,7 +133,6 @@ changeNameButton.addEventListener('click', showAlert);
 chat.addEventListener('submit', (e) => {
   e.preventDefault();
   const message = messageInput.value.trim();
-  const username = invisibleSpan.textContent;
 
   if (message !== '') {
     // Store the username in local storage
