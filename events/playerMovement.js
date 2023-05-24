@@ -19,6 +19,18 @@ function initPlayers(socket, io) {
     io.emit('playerNameUpdated', { playerId, name });
   });
 
+  socket.on('chat message', (msg) => {
+    const playerId = socket.id;
+    const playerName = players[playerId].name;
+    const message = `${playerName}: ${msg.message}`;
+  
+    players[playerId].message = message;
+  
+    // Broadcast the updated message and player information to all clients
+    io.emit('chat message', { username: playerName, message });
+    io.emit('playerMoved', { id: playerId, x: 0, y: 0, message });
+  });
+
   socket.emit('allPlayers', players);
   socket.broadcast.emit('newPlayer', socket.id);
   io.emit('playerColor', color, socket.id, players[socket.id].name);

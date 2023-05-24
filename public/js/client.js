@@ -4,7 +4,6 @@ const socket = io();
 const canvas = document.querySelector('canvas');
 let players = {};
 
-// Draw all players on the canvas
 function drawPlayers() {
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -27,10 +26,47 @@ function drawPlayers() {
     ctx.fillStyle = 'black';
     ctx.font = '12px Roboto';
     ctx.fillText(playerName, nameX, player.y - 5);
+
+    const message = player.message;
+    if (message) {
+      const messageWidth = ctx.measureText(message).width;
+      const messageX = player.x + (30 - messageWidth) / 2;
+      const messageY = player.y - 25;
+      const bubblePadding = 5;
+      const bubbleWidth = messageWidth + bubblePadding * 2;
+      const bubbleHeight = 20;
+      const tailHeight = 10;
+      const tailWidth = 10;
+      const tailBaseX = player.x + 15;
+      const tailBaseY = player.y - 15;
+
+      // Draw the chat bubble background
+      ctx.fillStyle = 'white';
+      ctx.fillRect(messageX - bubblePadding, messageY - bubbleHeight, bubbleWidth, bubbleHeight);
+
+      // Draw the chat bubble border
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(messageX - bubblePadding, messageY - bubbleHeight, bubbleWidth, bubbleHeight);
+
+      // Draw the speech bubble tail
+      ctx.beginPath();
+      ctx.moveTo(tailBaseX, tailBaseY);
+      ctx.lineTo(tailBaseX - tailWidth / 2, tailBaseY - tailHeight);
+      ctx.lineTo(tailBaseX + tailWidth / 2, tailBaseY - tailHeight);
+      ctx.closePath();
+      ctx.fillStyle = 'white';
+      ctx.fill();
+      ctx.stroke();
+
+      // Display the message inside the chat bubble
+      ctx.fillStyle = 'black';
+      ctx.font = '12px Roboto';
+      ctx.fillText(message, messageX, messageY - 5);
+    }
   }
 }
 
-// Redraw the canvas with updated player positions
 function redrawCanvas() {
   drawPlayers(players);
   requestAnimationFrame(redrawCanvas);
@@ -94,7 +130,14 @@ socket.on('playerDisconnected', (id) => {
 socket.on('chat message', (msg) => {
   const messageElement = document.createElement('li');
   messageElement.textContent = `${msg.username}: ${msg.message}`;
+  
+  messageHistory.innerHTML = '';
+  
   messageHistory.appendChild(messageElement);
+
+  const playerId = socket.id;
+  players[playerId].message = msg.message;
+  redrawCanvas();
 });
 
 // ********** 
@@ -123,7 +166,20 @@ function showAlert() {
   }
 }
 
-// Check if the username is stored in local storage
+function displayMessageAboveCube(player) {
+  const ctx = canvas.getContext('2d');
+  const message = player.message;
+
+  if (message) {
+    const messageWidth = ctx.measureText(message).width;
+    const messageX = player.x + (30 - messageWidth) / 2;
+
+    ctx.fillStyle = 'black';
+    ctx.font = '12px Roboto';
+    ctx.fillText(message, messageX, player.y - 20);
+  }
+}
+
 if (storedUsername) {
   invisibleSpan.textContent = storedUsername;
   socket.emit('updateName', storedUsername);
@@ -140,7 +196,6 @@ chat.addEventListener('submit', (e) => {
   const username = invisibleSpan.textContent;
 
   if (message !== '') {
-    // Store the username in local storage
     localStorage.setItem('username', username);
 
     socket.emit('chat message', { username, message });
@@ -148,7 +203,6 @@ chat.addEventListener('submit', (e) => {
   };
 });
 
-// Open/close chat window with "Z" key
 document.addEventListener('keyup', (e) => {
   if (e.key === 'z' || e.key === 'Z') {
     chatWindow.classList.add('show');
