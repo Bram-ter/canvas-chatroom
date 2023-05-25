@@ -3,6 +3,7 @@ import resizeCanvas from "./modules/canvasResizing.js";
 const socket = io();
 const canvas = document.querySelector('canvas');
 let players = {};
+let chatHistory = [];
 
 function drawPlayers() {
   const ctx = canvas.getContext('2d');
@@ -115,6 +116,8 @@ socket.on('connect', () => {
   if (reconnectMessage) {
     reconnectMessage.style.display = 'none';
   }
+
+  socket.emit('getChatHistory');
 });
 
 socket.io.on("reconnect_attempt", () => {
@@ -128,9 +131,14 @@ socket.on('playerDisconnected', (id) => {
 });
 
 socket.on('bubbleMessage', (msg) => {
+  const bubbleDuration = 5000;
   const senderId = msg.senderId;
   if (players[senderId]) {
     players[senderId].message = msg.message;
+
+    setTimeout(() => {
+      players[senderId].message = null;
+    }, bubbleDuration);
   }
 });
 
@@ -139,7 +147,46 @@ socket.on('chatMessage', (msg) => {
   const messageHistory = document.getElementById('messageHistory');
 
   messageElement.textContent = `${msg.message}`;
+
+  const beforeElement = document.createElement('span');
+  beforeElement.classList.add('message-before');
+  beforeElement.style.backgroundColor = msg.color;
+
+  messageElement.prepend(beforeElement);
   messageHistory.appendChild(messageElement);
+
+  chatHistory.push(msg);
+  if (chatHistory.length > 50) {
+    chatHistory.shift();
+  }
+
+  if (msg.username === invisibleSpan.textContent) {
+    messageElement.classList.add('my-message');
+  }
+});
+
+socket.on('chat history', storedChatHistory => {
+  chatHistory = storedChatHistory;
+
+  const messageHistory = document.getElementById('messageHistory');
+  messageHistory.innerHTML = '';
+
+  for (const msg of chatHistory) {
+    const messageElement = document.createElement('li');
+    messageElement.textContent = `${msg.message}`;
+
+    const beforeElement = document.createElement('span');
+    beforeElement.classList.add('message-before');
+    beforeElement.style.backgroundColor = msg.color;
+
+    messageElement.prepend(beforeElement);
+
+    if (msg.username === invisibleSpan.textContent) {
+      messageElement.classList.add('my-message');
+    }
+
+    messageHistory.appendChild(messageElement);
+  }
 });
 
 // ********** 

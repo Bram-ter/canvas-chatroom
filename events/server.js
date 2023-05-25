@@ -1,6 +1,7 @@
 import getRandomColor from "./getRandomColor.js"
 
 const players = {};
+let chatHistory = [];
 
 function initPlayers(socket, io) {
   const color = getRandomColor();
@@ -35,8 +36,18 @@ function initPlayers(socket, io) {
     const playerId = socket.id;
     const playerName = players[playerId].name;
     const message = `${playerName}: ${msg.message}`;
+
+    chatHistory.push({ username: playerName, color: players[playerId].color, message });
+
+    if (chatHistory.length > 50) {
+      chatHistory.shift();
+    }
   
-    io.emit('chatMessage', { username: playerName, message });
+    io.emit('chatMessage', { username: playerName, color: players[playerId].color, message });
+  });
+
+  socket.on('getChatHistory', () => {
+    socket.emit('chat history', chatHistory);
   });
 
   socket.on('playerMoved', ({ x, y }) => {
