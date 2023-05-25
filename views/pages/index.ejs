@@ -5,7 +5,10 @@
         <canvas style="background-color: rgb(<%= rgbValues[0].red %>, <%= rgbValues[0].green %>, <%= rgbValues[0].blue %>)"></canvas>
 
         <section>
-            <button id="close-button" aria-label="Close chat">&times;</button>
+            <div id="close-button" aria-label="Close chat">
+                <span></span>
+                <span></span>
+            </div>
             <ul id="messageHistory"></ul>
             <form>
             <span id="username"></span>
@@ -15,5 +18,8 @@
             </form>
         </section>
     </main>
+    <footer>
+        <p>Open the chat with 'Z'</p>
+    </footer>
 </body>
 </html>

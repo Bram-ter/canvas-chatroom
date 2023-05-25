@@ -1,12 +1,23 @@
+/* Fonts */
+@font-face {
+  font-family: roboto-flex;
+  src: url(../fonts/RobotoFlex.ttf) format('truetype-variations');
+}
+
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100%;
+  font-family: roboto-flex;
 }
 
 .show {
   display: block;
+}
+
+.hidden {
+  display: none;
 }
 
 #reconnectMessage {
@@ -21,6 +32,45 @@ html, body {
 
 #username {
   display: none;
+}
+
+#close-button {
+  cursor: pointer;
+  position: relative;
+  margin-left: auto;
+  margin-right: .2em;
+  margin-top: .2em;
+  width: 2em;
+  height: 2em;
+}
+
+#close-button:hover {
+  opacity: .5;
+}
+
+#close-button span {
+  position: absolute;
+  top: calc(50% - .1em);
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  display: block;
+  background-color: #000;
+  width: 80%;
+  height: 1em;
+  height: .2em;
+}
+
+#close-button span:nth-of-type(1) {
+  transform: rotate(45deg);
+}
+
+#close-button span:nth-of-type(2) {
+  transform: rotate(-45deg);
+}
+
+ul {
+  list-style-type: none;
 }
 
 canvas {
@@ -60,4 +110,13 @@ body main section form input:nth-of-type(2) {
 
 body main section form button {
   flex: 0 0 2em;
+}
+
+footer {
+  display: none;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: .5em;
+  background-color: #fff;
 }

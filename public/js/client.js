@@ -152,19 +152,20 @@ const invisibleSpan = document.getElementById('username');
 const changeNameButton = document.getElementById('change-name');
 const closeButton = document.getElementById('close-button');
 const chatWindow = document.querySelector('body main section');
+const chatShortcut = document.querySelector('footer')
 
 function showAlert() {
   const newName = prompt('Please enter your name:');
-  if (newName) {
+  if (newName && newName.trim() !== '') {
     invisibleSpan.textContent = newName;
     localStorage.setItem('username', newName);
     socket.emit('updateName', newName);
+    chatShortcut.classList.add('show');
+  } else {
+    alert('Name cannot be blank. Please try again.');
+    showAlert();
   }
 }
-
-showAlert();
-
-changeNameButton.addEventListener('click', showAlert);
 
 chat.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -184,6 +185,7 @@ chat.addEventListener('submit', (e) => {
 document.addEventListener('keyup', (e) => {
   if (e.key === 'z' || e.key === 'Z') {
     chatWindow.classList.add('show');
+    chatShortcut.classList.add('hidden');
   }
 });
 
@@ -191,5 +193,8 @@ closeButton.addEventListener('click', () => {
   chatWindow.classList.remove('show');
 });
 
+changeNameButton.addEventListener('click', showAlert);
+
+showAlert();
 resizeCanvas();
 requestAnimationFrame(redrawCanvas);

@@ -3,7 +3,7 @@ import http from 'http';
 import { Server } from 'socket.io';
 
 import routes from "./routes/routes.js";
-import initPlayers from "./events/playerMovement.js";
+import initPlayers from "./events/server.js";
 
 const app = express();
 const server = http.createServer(app);
