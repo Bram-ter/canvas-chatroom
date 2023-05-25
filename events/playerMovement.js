@@ -23,12 +23,20 @@ function initPlayers(socket, io) {
     io.emit('playerNameUpdated', { playerId, name });
   });
 
-  socket.on('chat message', (msg) => {
+  socket.on('bubbleMessage', (msg) => {
+    const playerId = socket.id;
+    const playerName = players[playerId].name;
+    const message = `${msg.message}`;
+  
+    io.emit('bubbleMessage', { senderId: playerId, username: playerName, message });
+  });
+
+  socket.on('chatMessage', (msg) => {
     const playerId = socket.id;
     const playerName = players[playerId].name;
     const message = `${playerName}: ${msg.message}`;
   
-    io.emit('chat message', { senderId: playerId, username: playerName, message });
+    io.emit('chatMessage', { username: playerName, message });
   });
 
   socket.on('playerMoved', ({ x, y }) => {

@@ -67,10 +67,6 @@ function drawPlayers() {
   }
 }
 
-function updateCanvas() {
-  drawPlayers(players);
-}
-
 function redrawCanvas() {
   drawPlayers(players);
   requestAnimationFrame(redrawCanvas);
@@ -131,20 +127,19 @@ socket.on('playerDisconnected', (id) => {
   delete players[id];
 });
 
-socket.on('chat message', (msg) => {
-  const messageElement = document.createElement('li');
-  const messageHistory = document.getElementById('messageHistory');
-
-  messageElement.textContent = `${msg.username}: ${msg.message}`;
-  messageHistory.appendChild(messageElement);
-
-  // For the canvas message bubbles
+socket.on('bubbleMessage', (msg) => {
   const senderId = msg.senderId;
   if (players[senderId]) {
     players[senderId].message = msg.message;
   }
+});
 
-  updateCanvas();
+socket.on('chatMessage', (msg) => {
+  const messageElement = document.createElement('li');
+  const messageHistory = document.getElementById('messageHistory');
+
+  messageElement.textContent = `${msg.message}`;
+  messageHistory.appendChild(messageElement);
 });
 
 // ********** 
@@ -178,9 +173,12 @@ chat.addEventListener('submit', (e) => {
 
   if (message !== '') {
     localStorage.setItem('username', username);
-    socket.emit('chat message', { username, message });
+
+    socket.emit('chatMessage', { username, message });
+    socket.emit('bubbleMessage', { message });
+
     messageInput.value = '';
-  };
+  }
 });
 
 document.addEventListener('keyup', (e) => {
