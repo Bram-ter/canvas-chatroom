@@ -96,7 +96,7 @@ ul li .message-before {
   content: "";
   display: inline-block;
   bottom: 0;
-  right: -2.3em;
+  right: -2.5em;
   width: 2em;
   height: 2em;
   transform: translateY(2.5em);
@@ -112,7 +112,7 @@ ul .my-message {
 }
 
 ul .my-message .message-before {
-  left: -2.3em;
+  left: -2.5em;
   right: unset;
 }
 
@@ -140,20 +140,75 @@ body main section {
 
 body main section form {
   position: absolute;
-  display: flex;
-  justify-content: space-between;
   width: 25em;
   bottom: 0;
 }
 
-body main section form input:nth-of-type(1),
-body main section form input:nth-of-type(2) {
-  flex: 1 1 auto;
+body main section form input,
+body main section form button {
+  position: absolute;
+  bottom: .5em;
 }
 
-body main section form button {
-  flex: 0 0 2em;
+body main section form #message {
+  position: absolute;
+  display: block;
+  border-radius: 2em;
+  padding-left: 1em;
+  border: 2px solid #007afe;
+  width: 20.5em;
+  height: 2.5em;
+  bottom: .5em;
+  left: .5em;
 }
+
+body main section form #send-button {
+  cursor: pointer;
+  border: none;
+  height: 3em;
+  width: 3em;
+  border: 2px solid #007afe;
+  background-color: transparent;
+  border-radius: 2em;
+  right: 4em;
+  bottom: 0;
+  background-image: url(../img/arrow.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50%;
+  bottom: .5em;
+}
+
+body main section form #change-name {
+  cursor: pointer;
+  border: none;
+  height: 3em;
+  width: 3em;
+  border: 2px solid #007afe;
+  background-image: url(../img/changeName.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50%;
+  border-radius: 2em;
+  right: .5em;
+  bottom: .5em;
+}
+
+body main section form #change-name:after {
+  content: 'Change name';
+  position: absolute;
+  font-size: .8em;
+  top: -2.5em;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+}
+
+body main section form #change-name:hover,
+body main section form #send-button:hover {
+  opacity: .5;
+}
+
 
 footer {
   display: none;

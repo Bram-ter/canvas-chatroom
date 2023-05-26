@@ -155,11 +155,6 @@ socket.on('chatMessage', (msg) => {
   messageElement.prepend(beforeElement);
   messageHistory.appendChild(messageElement);
 
-  chatHistory.push(msg);
-  if (chatHistory.length > 50) {
-    chatHistory.shift();
-  }
-
   if (msg.username === invisibleSpan.textContent) {
     messageElement.classList.add('my-message');
   }
