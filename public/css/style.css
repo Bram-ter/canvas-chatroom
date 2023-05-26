@@ -72,12 +72,41 @@ html, body {
 
 .modal {
   position: absolute;
-  height: 90vh;
-  width: 90%;
+  height: 50vh;
+  width: 50%;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0 auto;
   z-index: 9999;
   background-color: #fff;
   justify-content: center;
   align-items: center;
+}
+
+.modal .modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.modal .modal-content img {
+  margin-left: auto;
+  margin-right: auto;
+  width: 25em;
+}
+
+.modal .modal-content h2 {
+  margin: 0;
+}
+
+.modal .modal-content input {
+  width: 15em;
+}
+
+.modal .modal-content button {
+  width: 5em;
 }
 
 ul {
@@ -167,8 +196,8 @@ body main section form #message {
   border-radius: 2em;
   padding-left: 1em;
   border: 2px solid #007afe;
-  width: 20.5em;
-  height: 2.5em;
+  width: 19.3em;
+  height: 3em;
   bottom: .5em;
   left: .5em;
 }
@@ -176,12 +205,12 @@ body main section form #message {
 body main section form #send-button {
   cursor: pointer;
   border: none;
-  height: 3em;
-  width: 3em;
+  height: 3.5em;
+  width: 3.5em;
   border: 2px solid #007afe;
   background-color: transparent;
   border-radius: 2em;
-  right: 4em;
+  right: 4.7em;
   bottom: 0;
   background-image: url(../img/arrow.svg);
   background-repeat: no-repeat;
@@ -193,8 +222,8 @@ body main section form #send-button {
 body main section form #change-name {
   cursor: pointer;
   border: none;
-  height: 3em;
-  width: 3em;
+  height: 3.5em;
+  width: 3.5em;
   border: 2px solid #007afe;
   background-image: url(../img/changeName.svg);
   background-repeat: no-repeat;

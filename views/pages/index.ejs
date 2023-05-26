@@ -5,7 +5,9 @@
         <canvas style="background-color: rgb(<%= rgbValues[0].red %>, <%= rgbValues[0].green %>, <%= rgbValues[0].blue %>)"></canvas>
 
         <div id="myModal" class="modal">
+
             <div class="modal-content">
+              <img src="../img/canvaschat-logo.svg" alt="Logo">
               <h2>Enter your name</h2>
               <input id="nameInput" type="text" placeholder="Your name">
               <button id="nameSubmit" type="button">Submit</button>
@@ -20,7 +22,7 @@
             <ul id="messageHistory"></ul>
             <form>
             <span id="username"></span>
-            <input id="message" type="text" placeholder="Hallo">
+            <input id="message" type="text" placeholder="Message">
             <button id="send-button" type="submit"></button>
             <button id="change-name" type="submit"></button>
             </form>

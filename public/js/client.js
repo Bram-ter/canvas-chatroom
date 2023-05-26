@@ -195,11 +195,14 @@ const changeNameButton = document.getElementById('change-name');
 const closeButton = document.getElementById('close-button');
 const chatWindow = document.querySelector('body main section');
 const chatShortcut = document.querySelector('footer')
+const nameInput = document.getElementById("nameInput");
 let nameSubmitted = false;
 
 function showModal() {
   const modal = document.getElementById("myModal");
   modal.style.display = "flex";
+  chatWindow.classList.remove('show');
+  nameInput.focus();
 }
 
 function hideModal() {
@@ -248,6 +251,12 @@ document.addEventListener('keyup', (e) => {
   if (e.key === 'z' || e.key === 'Z') {
     chatWindow.classList.add('show');
     chatShortcut.classList.add('hidden');
+  }
+});
+
+nameInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    submitName();
   }
 });
 
