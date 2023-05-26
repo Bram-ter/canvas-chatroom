@@ -74,6 +74,10 @@ function redrawCanvas() {
 }
 
 document.addEventListener('keydown', (event) => {
+  if (!nameSubmitted) {
+    return;
+  }
+
   let x = 0;
   let y = 0;
 
@@ -158,6 +162,8 @@ socket.on('chatMessage', (msg) => {
   if (msg.username === invisibleSpan.textContent) {
     messageElement.classList.add('my-message');
   }
+
+  autoScroll();
 });
 
 socket.on('chat history', storedChatHistory => {
@@ -182,6 +188,8 @@ socket.on('chat history', storedChatHistory => {
 
     messageHistory.appendChild(messageElement);
   }
+
+  autoScroll();
 });
 
 // ********** 
@@ -208,6 +216,11 @@ function showModal() {
 function hideModal() {
   const modal = document.getElementById("myModal");
   modal.style.display = "none";
+}
+
+function autoScroll() {
+  const messageHistory = document.getElementById('messageHistory');
+  messageHistory.scrollTop = messageHistory.scrollHeight;
 }
 
 function submitName() {
@@ -248,7 +261,7 @@ chat.addEventListener('submit', (e) => {
 });
 
 document.addEventListener('keyup', (e) => {
-  if (e.key === 'z' || e.key === 'Z') {
+  if ((e.key === 'z' || e.key === 'Z') && nameSubmitted) {
     chatWindow.classList.add('show');
     chatShortcut.classList.add('hidden');
   }
