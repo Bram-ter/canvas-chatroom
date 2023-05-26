@@ -195,19 +195,39 @@ const changeNameButton = document.getElementById('change-name');
 const closeButton = document.getElementById('close-button');
 const chatWindow = document.querySelector('body main section');
 const chatShortcut = document.querySelector('footer')
+let nameSubmitted = false;
 
-function showAlert() {
-  const newName = prompt('Please enter your name:');
-  if (newName && newName.trim() !== '') {
+function showModal() {
+  const modal = document.getElementById("myModal");
+  modal.style.display = "flex";
+}
+
+function hideModal() {
+  const modal = document.getElementById("myModal");
+  modal.style.display = "none";
+}
+
+function submitName() {
+  const nameInput = document.getElementById("nameInput");
+  const newName = nameInput.value.trim();
+
+  if (newName !== '') {
     invisibleSpan.textContent = newName;
     localStorage.setItem('username', newName);
     socket.emit('updateName', newName);
     chatShortcut.classList.add('show');
+    hideModal();
+    nameSubmitted = true;
   } else {
     alert('Name cannot be blank. Please try again.');
-    showAlert();
   }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (!nameSubmitted) {
+    showModal();
+  }
+});
 
 chat.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -235,8 +255,9 @@ closeButton.addEventListener('click', () => {
   chatWindow.classList.remove('show');
 });
 
-changeNameButton.addEventListener('click', showAlert);
+document.getElementById("nameSubmit").addEventListener('click', submitName);
+changeNameButton.addEventListener('click', showModal);
 
-showAlert();
+showModal();
 resizeCanvas();
 requestAnimationFrame(redrawCanvas);
