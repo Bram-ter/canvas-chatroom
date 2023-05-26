@@ -26,6 +26,4 @@ Om het project zelf lokaal te draaien heb je de volgende dingen nodig
 
 ### Live demo
 
-Het project staat zelf ook live op https://railway.app/ en is te vinden op [deze link](real-time-web-2223-canvaschat.up.railway.app)
-
-idealit
+De live demo is te vinden in de beschrijving van de repository

@@ -1,3 +1,8 @@
+:root {
+  --blue-color: #007afe;
+  --hover-color: #f5f5f5;
+}
+
 /* Fonts */
 @font-face {
   font-family: roboto-flex;
@@ -102,11 +107,22 @@ html, body {
 }
 
 .modal .modal-content input {
+  border: 2px solid var(--blue-color);
+  padding: .5em;
   width: 15em;
+  border-radius: .5em;
 }
 
 .modal .modal-content button {
+  cursor: pointer;
   width: 5em;
+  border: 2px solid var(--blue-color);
+  background-color: transparent;
+  border-radius: .5em;
+}
+
+.modal .modal-content button:hover {
+  background-color: var(--hover-color);
 }
 
 ul {
@@ -147,7 +163,7 @@ ul li .message-before {
 ul .my-message {
   margin-left: 2em;
   border-radius: 1em 1em 1em 0em;
-  background-color: #007afe;
+  background-color: var(--blue-color);
   color: #fff;
 }
 
@@ -195,7 +211,7 @@ body main section form #message {
   display: block;
   border-radius: 2em;
   padding-left: 1em;
-  border: 2px solid #007afe;
+  border: 2px solid var(--blue-color);
   width: 19.3em;
   height: 3em;
   bottom: .5em;
@@ -207,7 +223,7 @@ body main section form #send-button {
   border: none;
   height: 3.5em;
   width: 3.5em;
-  border: 2px solid #007afe;
+  border: 2px solid var(--blue-color);
   background-color: transparent;
   border-radius: 2em;
   right: 4.7em;
@@ -224,7 +240,8 @@ body main section form #change-name {
   border: none;
   height: 3.5em;
   width: 3.5em;
-  border: 2px solid #007afe;
+  border: 2px solid var(--blue-color);
+  background-color: transparent;
   background-image: url(../img/changeName.svg);
   background-repeat: no-repeat;
   background-position: center;
@@ -246,7 +263,7 @@ body main section form #change-name:after {
 
 body main section form #change-name:hover,
 body main section form #send-button:hover {
-  opacity: .5;
+  background-color: var(--hover-color);
 }
 
 
